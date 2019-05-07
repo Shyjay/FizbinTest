@@ -49,26 +49,30 @@ public class PlayerController : MonoBehaviour
     private void CheckForInput() {
 
     	horizontalMove = Input.GetAxis("Horizontal");
-
-    	if(horizontalMove < 0) {
-    		spriteRenderer.flipX = true;
-    		if(!isRunning){
-    			animator.SetInteger("animationState",1);
-    		}
-    	}
-    	else if(horizontalMove == 0) {
-    		animator.SetInteger("animationState",0);
-    		if(!isRunning){
-    			animator.SetInteger("animationState",1);
-    		}
-    	}
-    	else
-    		spriteRenderer.flipX = false;
+    	
+    	if(isGrounded){
+	    	if(horizontalMove < 0) {
+	    		spriteRenderer.flipX = true;
+	    		if(!isRunning)
+	    			animator.SetInteger("animationState",1);
+	    		else
+	    			animator.SetInteger("animationState",2);
+	    		
+	    	}
+	    	else if(horizontalMove == 0)
+	    		animator.SetInteger("animationState",0);
+	    	else {
+	    		spriteRenderer.flipX = false;
+	    		if(!isRunning)
+	    			animator.SetInteger("animationState",1);
+	    		else
+	    			animator.SetInteger("animationState",2);
+	    	}
+	    }
 
     	if(isRunning && isGrounded) {
     		rigbod2d.velocity = new Vector2(horizontalMove * speedModifier * runningModifier, rigbod2d.velocity.y);
     		Debug.Log("Use Run Speed");
-    		animator.SetInteger("animationState",2);
     	}
     	else {
     		if(isGrounded) {
