@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-    	Debug.Log("Velocity: " + rigbod2d.velocity);
+    	//Debug.Log("Velocity: " + rigbod2d.velocity);
     	GroundCheck();
     	if(isRunning && isGrounded) {
     		rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier * runningModifier, rigbod2d.velocity.y);
