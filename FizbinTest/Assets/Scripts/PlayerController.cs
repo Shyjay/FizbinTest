@@ -31,28 +31,36 @@ public class PlayerController : MonoBehaviour
     	CheckForInput();
     }
 
-    //Check for Input regarding walk, run and jump (using Horizontal axis which can be setup in project setting Input manager)
-    //Standard Input A and D or Left and Right Arrow for walking, space for jumping and left shift key for running
-    //Controller Input default setup: left stick = walk movement, B Key (circle for PS) = running, Y Key (triangle for PS) = jumping
+    
     
     private void CheckForJumpAnimation() {
     	if(rigbod2d.velocity.y > 0) {
     		animator.SetInteger("animationState",3);
     	}
     	else if(rigbod2d.velocity.y < 0) {
-    		animator.SetInteger("animationState",3);
+    		animator.SetInteger("animationState",4);
     	}
     }
 
+    //Check for Input regarding walk, run and jump (using Horizontal axis which can be setup in project setting Input manager)
+    //Standard Input A and D or Left and Right Arrow for walking, space for jumping and left shift key for running
+    //Controller Input default setup: left stick = walk movement, B Key (circle for PS) = running, Y Key (triangle for PS) = jumping
+    
     private void CheckForInput() {
 
     	horizontalMove = Input.GetAxis("Horizontal");
 
     	if(horizontalMove < 0) {
     		spriteRenderer.flipX = true;
+    		if(!isRunning){
+    			animator.SetInteger("animationState",1);
+    		}
     	}
     	else if(horizontalMove == 0) {
     		animator.SetInteger("animationState",0);
+    		if(!isRunning){
+    			animator.SetInteger("animationState",1);
+    		}
     	}
     	else
     		spriteRenderer.flipX = false;
@@ -66,13 +74,13 @@ public class PlayerController : MonoBehaviour
     		if(isGrounded) {
     			rigbod2d.velocity = new Vector2(horizontalMove * speedModifier, rigbod2d.velocity.y);
     			Debug.Log("Use Walk Speed");
-    			animator.SetInteger("animationState",1);
     		}
     	}
 
         if(Input.GetButtonDown("Jump") && isGrounded) {
         	Debug.Log("Jump around");
         	rigbod2d.velocity = new Vector2(rigbod2d.velocity.x, jumpForce);
+        	CheckForJumpAnimation();
         }
 
         if(Input.GetButton("RunModifier")) {
