@@ -33,8 +33,10 @@ public class PlayerController : MonoBehaviour
     		Debug.Log("Use Run Speed");
     	}
     	else {
-    		rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier, rigbod2d.velocity.y);
-    		Debug.Log("Use Walk Speed");
+    		if(isGrounded) {
+    			rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier, rigbod2d.velocity.y);
+    			Debug.Log("Use Walk Speed");
+    		}
     	}
 
         if(Input.GetKey("space") && isGrounded) {
