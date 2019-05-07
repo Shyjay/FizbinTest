@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
     	//Debug.Log("Velocity: " + rigbod2d.velocity);
-    	GroundCheck();
+    	//GroundCheck();
     	CheckForInput();
     }
 
