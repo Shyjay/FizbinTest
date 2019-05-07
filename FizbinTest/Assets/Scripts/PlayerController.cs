@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+	//default unity variables are private if there are no access modifiers specified
+	//so they are not used here
 	Animator animator;
 	Rigidbody2D rigbod2d;
 	SpriteRenderer spriteRenderer;
-	[SerializeField] Transform groundChecker;
+
 	bool isGrounded;
 	bool isRunning;
 
@@ -29,6 +31,8 @@ public class PlayerController : MonoBehaviour
     }
 
     //Check for Input regarding walk, run and jump (using Horizontal axis which can be setup in project setting Input manager)
+    //Standard Input A and D or Left and Right Arrow for walking, space for jumping and left shift key for running
+    //Controller Input default setup: left stick = walk movement, B Key (circle for PS) = running, Y Key (triangle for PS) = jumping
     private void CheckForInput() {
     	if(isRunning && isGrounded) {
     		rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier * runningModifier, rigbod2d.velocity.y);
