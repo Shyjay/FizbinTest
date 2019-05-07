@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 public class DeathCondition : MonoBehaviour
 {
 
-   void OnCollisionEnter (Collision col)
+   void OnTriggerEnter2D (Collider2D col)
     {
-        if(col.gameObject.tag == "Player")
+        if(col.gameObject.CompareTag("Player"))
         {
         	Debug.Log("Death: reload Scene");
             SceneManager.LoadScene(0);

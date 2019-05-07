@@ -28,6 +28,10 @@ public class PlayerController : MonoBehaviour
     {
     	//Debug.Log("Velocity: " + rigbod2d.velocity);
     	GroundCheck();
+    	CheckForInput();
+    }
+
+    private void CheckForInput() {
     	if(isRunning && isGrounded) {
     		rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier * runningModifier, rigbod2d.velocity.y);
     		Debug.Log("Use Run Speed");
@@ -39,18 +43,43 @@ public class PlayerController : MonoBehaviour
     		}
     	}
 
-        if(Input.GetKey("space") && isGrounded) {
+        if(Input.GetButtonDown("Jump") && isGrounded) {
         	//Debug.Log("Jump around");
         	rigbod2d.velocity = new Vector2(rigbod2d.velocity.x, jumpForce);
         }
 
-        if(Input.GetKey(KeyCode.LeftShift)) {
+        if(Input.GetButton("RunModifier")) {
         	//Debug.Log("Is Running");
         	isRunning = true;
         }
-        else
+        else {
         	//Debug.Log("Isnt Running");
         	isRunning = false;
+    	}
+    }
+
+    void OnCollisionEnter2D (Collision2D col)
+    {
+        if(col.gameObject.CompareTag("Ground"))
+        {
+        	isGrounded = true;
+        }
+    }
+
+    void OnCollisionStay2D (Collision2D col)
+    {
+        if(col.gameObject.CompareTag("Ground"))
+        {
+        	isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit2D (Collision2D col)
+    {
+        if(col.gameObject.CompareTag("Ground"))
+        {
+        	isGrounded = false;
+        }
     }
 
     private void GroundCheck () {
