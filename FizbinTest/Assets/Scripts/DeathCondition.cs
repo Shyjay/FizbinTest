@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class DeathCondition : MonoBehaviour
 {
 
-   void OnTriggerEnter2D (Collider2D col)
+	//If player hits death collider level gets reseted
+	void OnTriggerEnter2D (Collider2D col)
     {
         if(col.gameObject.CompareTag("Player"))
         {

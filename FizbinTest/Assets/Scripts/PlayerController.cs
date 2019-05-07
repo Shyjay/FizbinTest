@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] float jumpForce;
 	[SerializeField] float runningModifier;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -23,14 +22,13 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
     	//Debug.Log("Velocity: " + rigbod2d.velocity);
-    	//GroundCheck();
     	CheckForInput();
     }
 
+    //Check for Input regarding walk, run and jump (using Horizontal axis which can be setup in project setting Input manager)
     private void CheckForInput() {
     	if(isRunning && isGrounded) {
     		rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier * runningModifier, rigbod2d.velocity.y);
@@ -58,6 +56,7 @@ public class PlayerController : MonoBehaviour
     	}
     }
 
+    //Check if player is grounded by collision Checks
     void OnCollisionEnter2D (Collision2D col)
     {
         if(col.gameObject.CompareTag("Ground"))
@@ -80,16 +79,5 @@ public class PlayerController : MonoBehaviour
         {
         	isGrounded = false;
         }
-    }
-
-    private void GroundCheck () {
-    	if(Physics2D.Linecast(transform.position, groundChecker.position, 1 << LayerMask.NameToLayer("Ground"))) {
-    		isGrounded = true;
-    		Debug.Log("IsGrounded");
-    	}
-    	else {
-    		isGrounded = false;
-    		Debug.Log("IsntGrounded");
-    	}
     }
 }

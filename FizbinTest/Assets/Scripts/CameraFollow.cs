@@ -7,13 +7,7 @@ public class CameraFollow : MonoBehaviour
 	public Transform target;
 	float actualCamPosY;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+	//Camera lerp follows player from original cam position
     void FixedUpdate()
     {
         Vector3 interpolatedCamMove = Vector3.Lerp(transform.position, new Vector3(target.position.x, target.position.y, transform.position.z),  0.5f);
