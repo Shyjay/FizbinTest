@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 	bool isGrounded;
 	bool isRunning;
 
+	float horizontalMove = 0f;
 	[SerializeField] float speedModifier;
 	[SerializeField] float jumpForce;
 	[SerializeField] float runningModifier;
@@ -24,7 +25,7 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
     	//Debug.Log("Velocity: " + rigbod2d.velocity);
     	CheckForInput();
@@ -33,20 +34,44 @@ public class PlayerController : MonoBehaviour
     //Check for Input regarding walk, run and jump (using Horizontal axis which can be setup in project setting Input manager)
     //Standard Input A and D or Left and Right Arrow for walking, space for jumping and left shift key for running
     //Controller Input default setup: left stick = walk movement, B Key (circle for PS) = running, Y Key (triangle for PS) = jumping
+    
+    private void CheckForJumpAnimation() {
+    	if(rigbod2d.velocity.y > 0) {
+    		animator.SetInteger("animationState",3);
+    	}
+    	else if(rigbod2d.velocity.y < 0) {
+    		animator.SetInteger("animationState",3);
+    	}
+    }
+
     private void CheckForInput() {
+
+    	horizontalMove = Input.GetAxis("Horizontal");
+
+    	if(horizontalMove < 0) {
+    		spriteRenderer.flipX = true;
+    	}
+    	else if(horizontalMove == 0) {
+    		animator.SetInteger("animationState",0);
+    	}
+    	else
+    		spriteRenderer.flipX = false;
+
     	if(isRunning && isGrounded) {
-    		rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier * runningModifier, rigbod2d.velocity.y);
+    		rigbod2d.velocity = new Vector2(horizontalMove * speedModifier * runningModifier, rigbod2d.velocity.y);
     		Debug.Log("Use Run Speed");
+    		animator.SetInteger("animationState",2);
     	}
     	else {
     		if(isGrounded) {
-    			rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier, rigbod2d.velocity.y);
+    			rigbod2d.velocity = new Vector2(horizontalMove * speedModifier, rigbod2d.velocity.y);
     			Debug.Log("Use Walk Speed");
+    			animator.SetInteger("animationState",1);
     		}
     	}
 
         if(Input.GetButtonDown("Jump") && isGrounded) {
-        	//Debug.Log("Jump around");
+        	Debug.Log("Jump around");
         	rigbod2d.velocity = new Vector2(rigbod2d.velocity.x, jumpForce);
         }
 
