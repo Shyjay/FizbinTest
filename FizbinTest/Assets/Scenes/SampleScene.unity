@@ -1167,7 +1167,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundChecker: {fileID: 90282957}
   speedModifier: 5
-  jumpForce: 10
+  jumpForce: 5
+  runningModifier: 2
 --- !u!1 &1284456256
 GameObject:
   m_ObjectHideFlags: 0

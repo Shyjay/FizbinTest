@@ -9,10 +9,11 @@ public class PlayerController : MonoBehaviour
 	SpriteRenderer spriteRenderer;
 	[SerializeField] Transform groundChecker;
 	bool isGrounded;
+	bool isRunning;
 
 	[SerializeField] float speedModifier;
 	[SerializeField] float jumpForce;
-	Vector2 jumpVector;
+	[SerializeField] float runningModifier;
 
     // Start is called before the first frame update
     void Start()
@@ -20,26 +21,44 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         rigbod2d = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        jumpVector = new Vector2 (0, jumpForce);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier, rigbod2d.velocity.y);
-        if(Input.GetButton("Jump")) {
-        	rigbod2d.AddForce(jumpVector, ForceMode2D.Force);
-        }
-        if(Input.GetKey("space")) {
+    	Debug.Log("Velocity: " + rigbod2d.velocity);
+    	GroundCheck();
+    	if(isRunning && isGrounded) {
+    		rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier * runningModifier, rigbod2d.velocity.y);
+    		Debug.Log("Use Run Speed");
+    	}
+    	else {
+    		rigbod2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speedModifier, rigbod2d.velocity.y);
+    		Debug.Log("Use Walk Speed");
+    	}
+
+        if(Input.GetKey("space") && isGrounded) {
         	Debug.Log("Jump around");
-        	rigbod2d.AddForce(jumpVector, ForceMode2D.Force);
+        	rigbod2d.velocity = new Vector2(rigbod2d.velocity.x, jumpForce);
         }
+
+        if(Input.GetKey(KeyCode.LeftShift)) {
+        	//Debug.Log("Is Running");
+        	isRunning = true;
+        }
+        else
+        	//Debug.Log("Isnt Running");
+        	isRunning = false;
     }
 
     private void GroundCheck () {
-    	if(Physics2D.Linecast(transform.position, groundChecker.position, 1 << LayerMask.NameToLayer("Ground")))
+    	if(Physics2D.Linecast(transform.position, groundChecker.position, 1 << LayerMask.NameToLayer("Ground"))) {
     		isGrounded = true;
-    	else 
+    		Debug.Log("IsGrounded");
+    	}
+    	else {
     		isGrounded = false;
+    		Debug.Log("IsntGrounded");
+    	}
     }
 }
