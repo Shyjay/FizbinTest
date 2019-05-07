@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     	}
 
         if(Input.GetKey("space") && isGrounded) {
-        	Debug.Log("Jump around");
+        	//Debug.Log("Jump around");
         	rigbod2d.velocity = new Vector2(rigbod2d.velocity.x, jumpForce);
         }
 
